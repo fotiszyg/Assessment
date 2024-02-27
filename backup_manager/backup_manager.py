@@ -5,7 +5,7 @@ from google.cloud.compute_v1 import SnapshotsClient, Snapshot
 
 from assignment_1 import list_instances
 from classes import InstanceCustom
-from common import convert_to_datetime, convert_difference
+from common import convert_to_datetime, convert_difference, sample_wait
 
 now = datetime.now()
 
@@ -18,6 +18,7 @@ def create_snapshot(
         name: str,
         count: int,
         project: str,
+        zone: str
 ) -> int:
     if inst.backup_enabled and inst.last_backup != 'Never':
         # Find difference between today and most recent backup.
@@ -59,7 +60,7 @@ def snapshot(project: str, zone: str, name: str):
         # Iterate over list of instances to find whether they have at least one snapshot during last day
         logging.info('Instance: %s', inst.name)
         logging.info('Backup Enabled: %s', inst.backup_enabled)
-        count = create_snapshot(inst, snapshot_client, name, count, project)
+        count = create_snapshot(inst, snapshot_client, name, count, project, zone)
     if count:
         # If there is at least one snapshot created, log following message
         logging.info('All snapshots done')
