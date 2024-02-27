@@ -27,7 +27,7 @@ def create_snapshot(
         created_at = convert_to_datetime(inst.last_backup.replace('T', ' ')[:-6])
         difference = now - created_at
         logging.info('Last backup was %s ago', convert_difference(difference))
-        if not difference.days:
+        if difference.days:
             # If last snapshot was created earlier than one day, create a new one
             count += 1
             logging.info('Starting asynchronous backup creation')
